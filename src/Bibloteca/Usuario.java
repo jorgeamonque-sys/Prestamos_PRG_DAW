@@ -61,14 +61,14 @@ public class Usuario {
 
     public Usuario(String nombre, String email, String numeroSocio, LocalDate fechaRegistro){
 
-        if(email == null || !email.contains("@")){
-            throw new IllegalArgumentException(
-                    "El email debe tener el caracter @"
+        if(email == null || !email.contains("@") || !email.contains(".")){
+            throw new UsuarioInvalidoException(
+                    "El email debe tener el caracter @ y un . por ejemplo algo asi jorgea_monque@gmail.com"
             );
         }
-        if(numeroSocio == null || !numeroSocio.contains("^SOC\\d{5}$")){
-            throw new IllegalArgumentException(
-              "El numero de socio tiene que tener el formato SOC mas 5 digitos"
+        if(numeroSocio == null || !numeroSocio.matches("^SOC[0-9]{5}")){
+            throw new UsuarioInvalidoException(
+              "El numero de socio tiene que tener el formato SOC mas 5 digitos por ejemplo SOC00123"
             );
         }
         this.nombre = nombre;
@@ -92,7 +92,8 @@ public class Usuario {
     public String toString() {
         return "Nombre de Usario: " + this.nombre + "\n" +
                 "Email del Usario: " + this.email + "\n" +
-                "Numero de Socio del Usario " + this.numeroSocio + "\n"
+                "Numero de Socio del Usario: " + this.numeroSocio + "\n" +
+                "El usario se registro: " + this.fechaRegistro
                 ;
     }
 }
