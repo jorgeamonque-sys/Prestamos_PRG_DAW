@@ -10,6 +10,7 @@ public class Usuario {
     private boolean sancionado;
     private LocalDate fechaFinSancion;
 
+
     public String getNombre() {
         return nombre;
     }
@@ -59,6 +60,17 @@ public class Usuario {
     }
 
     public Usuario(String nombre, String email, String numeroSocio, LocalDate fechaRegistro){
+
+        if(email == null || !email.contains("@")){
+            throw new IllegalArgumentException(
+                    "El email debe tener el caracter @"
+            );
+        }
+        if(numeroSocio == null || !numeroSocio.contains("^SOC\\d{5}$")){
+            throw new IllegalArgumentException(
+              "El numero de socio tiene que tener el formato SOC mas 5 digitos"
+            );
+        }
         this.nombre = nombre;
         this.email = email;
         this.numeroSocio = numeroSocio;
@@ -71,7 +83,16 @@ public class Usuario {
     public void levantarSancion(){
 
     }
-    public void estaSancionado(){
+    /*
+    public boolean estaSancionado(){
 
+    }
+     */
+    @Override
+    public String toString() {
+        return "Nombre de Usario: " + this.nombre + "\n" +
+                "Email del Usario: " + this.email + "\n" +
+                "Numero de Socio del Usario " + this.numeroSocio + "\n"
+                ;
     }
 }
