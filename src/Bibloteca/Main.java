@@ -34,5 +34,14 @@ public class Main {
 
         System.out.println(p1.toString());
 
+        System.out.println();
+
+        p1.registrarDevolucion(LocalDate.of(2026,02,28));
+
+        System.out.println();
+
+        System.out.println(p1.estaRetrasado());
+        System.out.println(p1.calcularDiasRetraso());
+
     }
 }

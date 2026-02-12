@@ -1,6 +1,7 @@
 package Bibloteca;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class Prestamo {
     private String codigoLibro;
@@ -9,6 +10,7 @@ public class Prestamo {
     private LocalDate fechaPrestamo;
     private LocalDate fechaDevolucionPrevista;
     private LocalDate fechaDevolicionReal;
+    private LocalDate fechaDevolucion;
 
 
     public String getCodigoLibro() {
@@ -91,12 +93,52 @@ public class Prestamo {
         this.fechaDevolucionPrevista = fechaPrestamo.plusDays(14);
     }
 
+    public void registrarDevolucion(LocalDate fechaDevolucion){
+
+        if(fechaDevolucion == null){
+            throw new ExcepcionesBiblioteca.PrestamoInvalidoException("La fecha no puede estar vacia");
+        }
+        if(fechaDevolucion.isBefore(this.fechaPrestamo)){
+            throw new ExcepcionesBiblioteca.PrestamoInvalidoException(
+                    "La fecha de devolucion no puede ser anterior a la fecha del prestamo"
+            );
+        }
+        this.fechaDevolucion = fechaDevolucion;
+    }
+
+    public  int calcularDiasRetraso(){
+
+        LocalDate fechaReferencia;
+
+        if(this.fechaDevolucion != null){
+            fechaReferencia = this.fechaDevolucion;
+        }else{
+            fechaReferencia = LocalDate.now();
+        }
+
+        if (!fechaReferencia.isAfter(this.fechaDevolucionPrevista)){
+            return 0;
+        }
+        return (int) ChronoUnit.DAYS.between(
+                this.fechaDevolucionPrevista,fechaReferencia
+                );
+    }
+
+    public boolean estaRetrasado(){
+        if(this.fechaDevolucion != null){
+            return this.fechaDevolucion.isAfter(this.fechaDevolucionPrevista);
+        }
+        return LocalDate.now().isAfter(this.fechaDevolucionPrevista);
+    }
+
+
+
     @Override
     public String toString() {
         return "Fecha del Prestamo: " + this.fechaPrestamo + "\n"
                 + "Codigo del libro: " + this.codigoLibro + "\n"
                 + "Titulo del libro: " + this.tituloLibro + "\n"
-                + "Socio asociado al Prestamo: " + this.socio + "\n"
+                + "Socio asociado al Prestamo: " + socio.getNumeroSocio() + "\n"
                 + "Fecha del Prestamo: " + this.fechaPrestamo + "\n"
                 + "Fecha de Devolucion Prevista: " + this.fechaDevolucionPrevista;
     }

@@ -10,6 +10,10 @@ public class Usuario {
     private boolean sancionado;
     private LocalDate fechaFinSancion;
 
+    public Usuario() {
+
+    }
+
 
     public String getNombre() {
         return nombre;
