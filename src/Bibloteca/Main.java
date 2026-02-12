@@ -23,7 +23,16 @@ public class Main {
         Usuario u1 = new Usuario("Jorge","jorgea_monque@gmail.com","SOC00045",
                 LocalDate.of(2026,07,16));
 
-
         System.out.println(u1.toString());
+
+        System.out.println();
+        System.out.println();
+
+
+        Prestamo p1 = new Prestamo("JOR1234",u1,"Sancho Panza",
+                LocalDate.of(2026,02,10));
+
+        System.out.println(p1.toString());
+
     }
 }

@@ -61,14 +61,34 @@ public class Usuario {
 
     public Usuario(String nombre, String email, String numeroSocio, LocalDate fechaRegistro){
 
-        if(email == null || !email.contains("@") || !email.contains(".")){
-            throw new UsuarioInvalidoException(
-                    "El email debe tener el caracter @ y un . por ejemplo algo asi jorgea_monque@gmail.com"
+        if(email == null || email.trim().isEmpty()){
+            throw new ExcepcionesBiblioteca.UsuarioInvalidoException(
+                    "El email no puede estar vacio un Ejemplo seria: usuario@gmail.com"
             );
         }
-        if(numeroSocio == null || !numeroSocio.matches("^SOC[0-9]{5}")){
-            throw new UsuarioInvalidoException(
-              "El numero de socio tiene que tener el formato SOC mas 5 digitos por ejemplo SOC00123"
+
+        if(fechaRegistro == null){
+            throw new ExcepcionesBiblioteca.UsuarioInvalidoException(
+                    "La fecha de registra no puede estar vacia"
+            );
+        }
+
+        if(nombre == null || nombre.trim().isEmpty()){
+            throw new ExcepcionesBiblioteca.UsuarioInvalidoException(
+                    "El nombre no puede estar vacio"
+            );
+        }
+
+
+        if(email == null || !email.contains("@") || !email.contains(".")){
+            throw new ExcepcionesBiblioteca.UsuarioInvalidoException(
+                    "El email debe tener el caracter @ y un punto. Ejemplo: usuario@gmail.com"
+            );
+        }
+
+        if (numeroSocio == null || !numeroSocio.matches("^SOC[0-9]{5}$")) {
+            throw new ExcepcionesBiblioteca.UsuarioInvalidoException(
+                    "El numero de socio debe tener el formato SOC mas 5 digitos. Ejemplo: SOC00123"
             );
         }
         this.nombre = nombre;
@@ -77,17 +97,18 @@ public class Usuario {
         this.fechaRegistro = fechaRegistro;
     }
 
-    public void sancionar(){
-        return;
+    public void sancionar(int diaSancion, LocalDate fechaInicio){
+        this.sancionado = true;
+        this.fechaFinSancion = fechaInicio.plusDays(diaSancion);
     }
     public void levantarSancion(){
-
+        this.sancionado = false;
+        this.fechaFinSancion = null;
     }
-    /*
     public boolean estaSancionado(){
-
+        return this.sancionado;
     }
-     */
+
     @Override
     public String toString() {
         return "Nombre de Usario: " + this.nombre + "\n" +
