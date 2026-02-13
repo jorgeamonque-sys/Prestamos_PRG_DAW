@@ -133,7 +133,8 @@ public class Prestamo {
 
     @Override
     public String toString() {
-        return "Fecha del Prestamo: " + this.fechaPrestamo + "\n"
+        return "===PRESTAMO==="+"\n"
+                +"Fecha del Prestamo: " + this.fechaPrestamo + "\n"
                 + "Codigo del libro: " + this.codigoLibro + "\n"
                 + "Titulo del libro: " + this.tituloLibro + "\n"
                 + "Socio asociado al Prestamo: " + socio.getNumeroSocio() + "\n"

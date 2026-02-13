@@ -115,10 +115,10 @@ public class Usuario {
 
     @Override
     public String toString() {
-        return "Nombre de Usario: " + this.nombre + "\n" +
+        return "===USUARIO==="+"\n"
+                +"Nombre de Usario: " + this.nombre + "\n" +
                 "Email del Usario: " + this.email + "\n" +
                 "Numero de Socio del Usario: " + this.numeroSocio + "\n" +
-                "El usario se registro: " + this.fechaRegistro
-                ;
+                "El usario se registro: " + this.fechaRegistro;
     }
 }

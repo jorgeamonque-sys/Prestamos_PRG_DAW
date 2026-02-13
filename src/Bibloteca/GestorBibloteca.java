@@ -11,6 +11,40 @@ public class GestorBibloteca {
     private int numUsuarios;
     private int numPrestamos;
 
+    public Usuario[] getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuarios(Usuario[] usuarios) {
+        this.usuarios = usuarios;
+    }
+
+    public Prestamo[] getPrestamos() {
+        return prestamos;
+    }
+
+    public void setPrestamos(Prestamo[] prestamos) {
+        this.prestamos = prestamos;
+    }
+
+    public int getNumUsuarios() {
+        return numUsuarios;
+    }
+
+    public void setNumUsuarios(int numUsuarios) {
+        this.numUsuarios = numUsuarios;
+    }
+
+    public int getNumPrestamos() {
+        return numPrestamos;
+    }
+
+    public void setNumPrestamos(int numPrestamos) {
+        this.numPrestamos = numPrestamos;
+    }
+
+
+
 
     public GestorBibloteca(){
         this.usuarios = new Usuario[MAX_USARIOS];
@@ -58,6 +92,29 @@ public class GestorBibloteca {
         prestamos[numPrestamos] = nuevoPrestamo;
         numPrestamos++;
     }
+    public boolean delvolverLibro(String codigoLibro, LocalDate fechaDevolucion){
 
+        if(fechaDevolucion == null){
+            throw new ExcepcionesBiblioteca.PrestamoInvalidoException("La fecha de devolcion no " +
+                    "puede ser anterior");
+        }
+        if(fechaDevolucion.isBefore(this.)){
+            throw new ExcepcionesBiblioteca.PrestamoInvalidoException("La fecha de devolucion no" +
+                    " puede ser anterior");
+        }
+
+        for(int i = 0; i < numPrestamos; i++){
+            if(prestamos[i].getCodigoLibro().equals(codigoLibro) && prestamos[i].getFechaDevolicionReal() == null){
+
+                prestamos[i].registrarDevolucion(fechaDevolucion);
+                int diaRetraso = prestamos[i].calcularDiasRetraso();
+                if(diaRetraso > 0){
+                    prestamos[i].getUsuario().sancionar(diaRetraso);
+                }
+                return  true;
+            }
+        }
+        return false;
+    }
 }
 
