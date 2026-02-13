@@ -131,8 +131,6 @@ public class Prestamo {
         return LocalDate.now().isAfter(this.fechaDevolucionPrevista);
     }
 
-
-
     @Override
     public String toString() {
         return "Fecha del Prestamo: " + this.fechaPrestamo + "\n"

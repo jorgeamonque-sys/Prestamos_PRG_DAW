@@ -1,14 +1,63 @@
 package Bibloteca;
 
-import java.nio.file.attribute.UserDefinedFileAttributeView;
+
+import java.time.LocalDate;
 
 public class GestorBibloteca {
     private static final int MAX_USARIOS = 50;
     private static final int MAX_PRESTAMOS = 200;
-    private Usuario[] usarios;
+    private Usuario[] usuarios;
     private Prestamo[] prestamos;
     private int numUsuarios;
     private int numPrestamos;
 
+
+    public GestorBibloteca(){
+        this.usuarios = new Usuario[MAX_USARIOS];
+        this.prestamos = new Prestamo[MAX_PRESTAMOS];
+        this.numUsuarios = 0;
+        this.numPrestamos = 0;
     }
+    public void registrarUsuario(Usuario nuevoUsuario){
+        if (nuevoUsuario == null){
+            throw new ExcepcionesBiblioteca.UsuarioInvalidoException(("El usuario no puede ser nulo"));
+        }
+        for(int i = 0; i < numUsuarios;i++){
+            if(usuarios[i].getNumeroSocio().equals(nuevoUsuario.getNumeroSocio())){
+                throw new ExcepcionesBiblioteca.UsuarioRepetidoException(
+                        "El usuario con numero de socio " +
+                        nuevoUsuario.getNumeroSocio() + " ya esta registrado");
+            }
+        }
+        if(numUsuarios >= MAX_USARIOS){
+            throw new ExcepcionesBiblioteca.UsuarioInvalidoException("No hay espacio para mas usuarios");
+        }
+        usuarios[numUsuarios] = nuevoUsuario;
+        numUsuarios++;
+    }
+    public void realizarPrestamo(String codigoLibro, String tituloLibro, LocalDate
+            fechaPrestamo,Usuario usuario){
+
+        if(usuario == null){
+            throw new ExcepcionesBiblioteca.UsuarioInvalidoException("El usuario no puede ser nulo");
+        }
+        if(usuario.estaSancionado()){
+            throw new ExcepcionesBiblioteca.UsuarioSancionadoException("El usuario esta sancionado y " +
+                    "no puede realizar este prestamo");
+        }
+        for(int i = 0; i < numPrestamos; i++){
+            if(prestamos[i].getCodigoLibro().equals(codigoLibro) && prestamos[i].getFechaDevolicionReal() == null){
+                throw new ExcepcionesBiblioteca.LibroNoDisponibleException("EL libro con codigo "
+                + codigoLibro + " ya esta prestaod");
+            }
+        }
+        if(numPrestamos >= MAX_PRESTAMOS){
+            throw new ExcepcionesBiblioteca.PrestamoInvalidoException("No hay mas espacio para mas prestamos");
+        }
+        Prestamo nuevoPrestamo = new Prestamo(codigoLibro,usuario,tituloLibro,fechaPrestamo);
+        prestamos[numPrestamos] = nuevoPrestamo;
+        numPrestamos++;
+    }
+
+}
 
