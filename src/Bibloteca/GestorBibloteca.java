@@ -45,7 +45,6 @@ public class GestorBibloteca {
 
 
 
-
     public GestorBibloteca(){
         this.usuarios = new Usuario[MAX_USARIOS];
         this.prestamos = new Prestamo[MAX_PRESTAMOS];
@@ -69,6 +68,8 @@ public class GestorBibloteca {
         usuarios[numUsuarios] = nuevoUsuario;
         numUsuarios++;
     }
+
+
     public void realizarPrestamo(String codigoLibro, String tituloLibro, LocalDate
             fechaPrestamo,Usuario usuario){
 
@@ -92,29 +93,45 @@ public class GestorBibloteca {
         prestamos[numPrestamos] = nuevoPrestamo;
         numPrestamos++;
     }
+
+
     public boolean delvolverLibro(String codigoLibro, LocalDate fechaDevolucion){
 
         if(fechaDevolucion == null){
             throw new ExcepcionesBiblioteca.PrestamoInvalidoException("La fecha de devolcion no " +
                     "puede ser anterior");
         }
-        if(fechaDevolucion.isBefore(this.)){
-            throw new ExcepcionesBiblioteca.PrestamoInvalidoException("La fecha de devolucion no" +
-                    " puede ser anterior");
-        }
-
         for(int i = 0; i < numPrestamos; i++){
             if(prestamos[i].getCodigoLibro().equals(codigoLibro) && prestamos[i].getFechaDevolicionReal() == null){
 
                 prestamos[i].registrarDevolucion(fechaDevolucion);
                 int diaRetraso = prestamos[i].calcularDiasRetraso();
                 if(diaRetraso > 0){
-                    prestamos[i].getUsuario().sancionar(diaRetraso);
+                    prestamos[i].getSocio().sancionar(diaRetraso, fechaDevolucion);
                 }
                 return  true;
             }
         }
         return false;
+    }
+
+
+    public Usuario buscarUsuario(String numeroSocio){
+        if (numeroSocio == null){
+            return null;
+        }
+        for(int i = 0;i < numUsuarios;i++){
+            if(usuarios[i].getNumeroSocio().equals(numeroSocio)){
+                return usuarios[i];
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String toString() {
+        return "El numero de Usarios es " + numUsuarios + "\n"
+                + "El numero de Prestamos es " + numPrestamos;
     }
 }
 
