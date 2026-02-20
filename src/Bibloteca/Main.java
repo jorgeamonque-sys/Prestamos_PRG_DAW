@@ -8,8 +8,8 @@ import java.util.Scanner;
 public class Main {
 
 
-     private static final Scanner sc = new Scanner(System.in);
-     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    private static final Scanner sc = new Scanner(System.in);
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public static int mostrarMenu(Scanner in) {
         int resp = 0;
@@ -110,15 +110,55 @@ public class Main {
         }
     }
 
+    private static void consultarEstadoUsuario(GestorBibloteca gestor){
 
+        System.out.println("Numero de socio: ");
+        String numeroSocio = sc.nextLine();
 
-    private static int leerEntero(String mensaje){
-        while(true){
-            try{
-                System.out.println(mensaje);
-                return Integer.parseInt(sc.nextLine());
-            }catch (NumberFormatException e){
-                System.out.println("Debe introducir un numero valido");
+        Usuario usuario = gestor.buscarUsuario(numeroSocio);
+
+        if(usuario == null){
+            System.out.println("Usario no encontrado");
+            return;
+        }
+        System.out.println("Usuario: " + usuario.getNombre());
+
+        if(usuario.estaSancionado()){
+            System.out.println("Estado: SANCIONADO");
+        }else{
+            System.out.println("Estado: ACTIVO");
+        }
+    }
+
+    private static void mostrarPrestamosActivos(GestorBibloteca gestor){
+
+        Prestamo[] prestamos = gestor.getPrestamos();
+
+        for(Prestamo p : prestamos){
+            if(p != null && p.getFechaDevolicionReal() == null){
+                System.out.println(p.getCodigoLibro()+ " - " + p.getTituloLibro());
+            }
+        }
+    }
+
+    private static void mostrarUsuariosSancionados(GestorBibloteca gestor){
+        Usuario[] usuarios = gestor.getUsuarios();
+
+        for(Usuario u : usuarios){
+            if(u != null && u.estaSancionado()){
+                System.out.println(u.getNumeroSocio()+ " - " + u.getNombre());
+            }
+        }
+    }
+
+    private static void actualizarSanciones(GestorBibloteca gestor){
+
+        Usuario[] usuarios = gestor.getUsuarios();
+        LocalDate hoy = LocalDate.now();
+
+        for(Usuario u : usuarios){
+            if(u != null){
+                u.actualizarSancion(hoy);
             }
         }
     }
@@ -171,6 +211,5 @@ public class Main {
                     System.out.println("Opcion no valida");
             }
         }while(opcion != 8);
-        }
     }
-
+}

@@ -113,7 +113,11 @@ public class Usuario {
         return this.sancionado;
     }
 
-
+    public void actualizarSancion(LocalDate hoy){
+        if(fechaFinSancion != null && hoy.isAfter(fechaFinSancion)){
+            fechaFinSancion = null;
+        }
+    }
 
     @Override
     public String toString() {

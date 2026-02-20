@@ -130,6 +130,9 @@ public class Prestamo {
         }
         return LocalDate.now().isAfter(this.fechaDevolucionPrevista);
     }
+    public boolean estaActivo(){
+        return fechaDevolucion == null;
+    }
 
     @Override
     public String toString() {

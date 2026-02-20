@@ -81,7 +81,7 @@ public class GestorBibloteca {
                     "no puede realizar este prestamo");
         }
         for(int i = 0; i < numPrestamos; i++){
-            if(prestamos[i].getCodigoLibro().equals(codigoLibro) && prestamos[i].getFechaDevolicionReal() == null){
+            if(prestamos[i].getCodigoLibro().equals(codigoLibro) && prestamos[i].estaActivo()){
                 throw new ExcepcionesBiblioteca.LibroNoDisponibleException("EL libro con codigo "
                 + codigoLibro + " ya esta prestaod");
             }
@@ -102,12 +102,26 @@ public class GestorBibloteca {
                     "puede ser anterior");
         }
         for(int i = 0; i < numPrestamos; i++){
-            if(prestamos[i].getCodigoLibro().equals(codigoLibro) && prestamos[i].getFechaDevolicionReal() == null){
+
+            if(prestamos[i].getCodigoLibro().equals(codigoLibro) && prestamos[i].estaActivo()){
 
                 prestamos[i].registrarDevolucion(fechaDevolucion);
+
                 int diaRetraso = prestamos[i].calcularDiasRetraso();
+
                 if(diaRetraso > 0){
+
                     prestamos[i].getSocio().sancionar(diaRetraso, fechaDevolucion);
+
+                    System.out.println("Devolucion registrada con " +
+                            diaRetraso + " dias de retraso");
+
+                    System.out.println("Usuario sancionado por " +
+                            diaRetraso + " dias (hasta el " +
+                            fechaDevolucion.plusDays(diaRetraso)+") ");
+                }
+                else{
+                    System.out.println("Devolucion resgistrada correctamente");
                 }
                 return  true;
             }
