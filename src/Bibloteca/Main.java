@@ -57,6 +57,8 @@ public class Main {
             Usuario usuario = new Usuario(nombre,email,numeroSocio,fecha);
             gestor.registrarUsuario(usuario);
 
+            System.out.println(usuario.toString());
+            System.out.println();
             System.out.println("Usuario registrado");
 
         }catch (Exception e){
@@ -85,7 +87,6 @@ public class Main {
 
             gestor.realizarPrestamo(codigo,titulo,fecha,usuario);
 
-            System.out.println("Prestamo realizado");
         }catch (Exception e){
             System.out.println("ERROR: " + e.getMessage());
         }
@@ -121,7 +122,7 @@ public class Main {
             System.out.println("Usario no encontrado");
             return;
         }
-        System.out.println("Usuario: " + usuario.getNombre());
+        System.out.println(usuario.toString());
 
         if(usuario.estaSancionado()){
             System.out.println("Estado: SANCIONADO");

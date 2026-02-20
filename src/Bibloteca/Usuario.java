@@ -115,7 +115,7 @@ public class Usuario {
 
     public void actualizarSancion(LocalDate hoy){
         if(fechaFinSancion != null && hoy.isAfter(fechaFinSancion)){
-            fechaFinSancion = null;
+            levantarSancion();
         }
     }
 

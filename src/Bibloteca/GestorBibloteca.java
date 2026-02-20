@@ -2,6 +2,7 @@ package Bibloteca;
 
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class GestorBibloteca {
     private static final int MAX_USARIOS = 50;
@@ -10,6 +11,9 @@ public class GestorBibloteca {
     private Prestamo[] prestamos;
     private int numUsuarios;
     private int numPrestamos;
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
 
     public Usuario[] getUsuarios() {
         return usuarios;
@@ -92,6 +96,9 @@ public class GestorBibloteca {
         Prestamo nuevoPrestamo = new Prestamo(codigoLibro,usuario,tituloLibro,fechaPrestamo);
         prestamos[numPrestamos] = nuevoPrestamo;
         numPrestamos++;
+
+        System.out.println("Prestamo realizado");
+        System.out.println("Devolucion prevista: " + nuevoPrestamo.getFechaDevolucionPrevista().format(formatter));
     }
 
 
@@ -119,9 +126,6 @@ public class GestorBibloteca {
                     System.out.println("Usuario sancionado por " +
                             diaRetraso + " dias (hasta el " +
                             fechaDevolucion.plusDays(diaRetraso)+") ");
-                }
-                else{
-                    System.out.println("Devolucion resgistrada correctamente");
                 }
                 return  true;
             }
